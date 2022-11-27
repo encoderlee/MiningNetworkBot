@@ -1,0 +1,2 @@
+# MiningNetworkBot
+一个免费开源的MiningNetwork合约脚本
