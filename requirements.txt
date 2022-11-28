@@ -1,0 +1,7 @@
+requests
+eosapi
+tenacity
+argparse
+schedule
+dacite
+ruamel.yaml
