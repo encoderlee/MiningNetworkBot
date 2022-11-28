@@ -5,7 +5,7 @@
 ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 [![](https://img.shields.io/badge/blog-@encoderlee-red)](https://encoderlee.blog.csdn.net)
 #### 一个免费开源的MiningNetwork合约脚本，主要用于大户批量操作卡
-
+![](https://raw.githubusercontent.com/encoderlee/MiningNetworkBot/main/doc/demo1.png)
 注意，由于MiningNetwork游戏已经日落西山，本脚本已于2022年8月5日停止更新，对于一些新出的卡片和包不再支持，需要的可以自行修改代码
 
 不过，买包和卖包功能，涉及到在原子市场上低价抢购和出售NFT，这部分代码可以参考借鉴，提取出来，用于开发NFT抢购和倒卖的脚本
