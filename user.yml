@@ -1,0 +1,96 @@
+#注意，每个参数名的冒号后面，都有一个空格，修改参数不要丢了空格
+
+# wax节点地址，使用公共节点，有时候会网络不通，或者访问太频繁被限制，出现429错误，可以换节点，或者搭建私有节点
+# 公共节点列表：https://wax.eosio.online/endpoints
+
+rpc_domain: https://wax.pink.gg
+
+
+# 原子节点
+rpc_atomic: https://aa.dapplica.io
+# http代理（比如127.0.0.1:10808)
+# 给脚本设置HTTP代理，这样可以在一定程度上解决公共节点限制访问的问题，不需要则留空
+proxy:
+proxy_username:
+proxy_password:
+
+# cpu代付号,cpu_key填写该代付号私钥，不需要代付则留空
+cpu_account:
+cpu_key:
+
+# WAX主账号
+account: fuckpayforit
+private_key: 5J94Yqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# WAX子账号
+# 子账号私钥
+sub_key: 5J94Yqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# 子账号名
+sub_accounts:
+  - zhuandafao12
+  - zhuandafao13
+
+
+# 功能：【获取收益】【升级卡】【加速升级卡】【质押】【解除质押】【开包】【买包】【批量买包】【批量开包归集】【转移】【买卡】【卖卡】
+
+# 通用参数
+
+# 要处理的卡类型 free、common、rare、epic、legendary
+# 受此参数影响的功能：【升级卡】【加速升级卡】【质押】【解除质押】【转移】【买卡】【卖卡】
+# 收集奖励不受此参数影响，收集奖励总是收集全部卡的奖励
+rarity: free
+card_class: 0
+
+# max_count 最多质押多少个，最多解除质押多少个，最多升级多少个，最多加速升级多少个，最多买多少个，最多转多少个，最多卖多少个， 最多买多少个包
+# 0就是无限制，一直买，全部质押，全部解除质押，全部升级，全部转走，全部卖掉...
+# 受此参数影响的功能：【升级卡】【加速升级卡】【质押】【解除质押】【转移】【买卡】【卖卡】【买包】【开包】
+max_count: 0
+
+# 要处理的卡的等级
+# 设置为0，只买0级卡，设置为100，只买100级卡，设置为-1，则不管等级，全部都处理
+#但一般买卡的话，如果不管等级，一般设置为-1，反正买卡是低价优先，设置为-1的话，有时候可以低价买到大于0级的卡
+# 受此参数影响的功能：【升级卡】【质押】【解除质押】【转移】【买卡】【卖卡】
+# 升级卡时，该参数的含义为升到多少级s
+level: -1
+
+
+# getreward 收集卡奖励
+# 收集奖励间隔（分钟）
+getreward: 60
+# 收集奖励后是否立即换成BTK
+withdraw: true
+# 一笔交易收集500张卡的奖励,即每500张每500张的收集
+group: 500
+
+
+# buy 原子市场扫灰卡
+# 加速购买，同时多少个请求
+threads: 5
+# 扫货限制价格
+limit_price: "1.1"
+
+
+# transfer 批量转移灰卡到别的账户
+#要转移的目标账户
+to_account: "xxxxxxxxxxxxxxxxxxxx"
+
+# sell 批量上架到原子市场卖卡
+# 上架到原子市场的价格
+sell_price: "5000"
+
+
+# sh与btk兑换价格，达到后进行兑换
+# 10000SH等于多少btk
+sh_price: 0.0006
+
+# 扫描价格间隔(秒)
+interval_price: 60
+
+# 是否记录最高最低价到文件
+record: true
+
+
+
+
+
+
