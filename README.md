@@ -183,19 +183,30 @@ record：在监视价格过程中（脚本运行过程中）是否把出现过�
 现在这个功能没有用了，之前每个账号买包是有个数限制和间隔限制的，有再多BTK也没法一次性买很多包，
 于是借助这个功能，准备若干个小号，脚本自动将BTK分发到每个小号上，然后自动控制这些小号分别去买包，每个小号各买一个包
 
-影响参数：  
-sub_key：小号的私钥，所有小号要求使用一样的私钥  
-sub_accounts： 小号的账号名，这是一个数组，小号数量无限  
-
+影响参数：   
+sub_accounts： 在此填写多个小号的账号和私钥  
+threads： 并发线程数  
 
 ### 14.小号批量开包归集.bat
 >python code\batch.py unpacks -config user.yml
 
 现在这个功能没有用了，在执行完【小号批量买包.bat】后，再执行该功能，可以控制这些小号分别开包，然后把开得的卡片归集到主号上
 
+影响参数：
+sub_accounts： 在此填写多个小号的账号和私钥  
+threads： 并发线程数  
+
+### 15.多号获取收益归集.bat
+
+运行后，会定时收集小号上的SH奖励，兑换成BTK，然后自动归集到主号
+
 影响参数：  
-sub_key：小号的私钥，所有小号要求使用一样的私钥  
-sub_accounts： 小号的账号名，这是一个数组，小号数量无限 
+account： 主号，BTK归集到这个账号  
+sub_accounts： 在此填写多个小号的账号和私钥  
+getreward: 获取收益的间隔，分钟  
+withdraw: 收集奖励后是否立即换成BTK  
+collect: 换成BTK后，是否立即归集到主账号  
+threads： 并发线程数  
 
 ## 配置文件说明
 
@@ -222,15 +233,12 @@ cpu_key:
 
 # WAX主账号
 account: fuckpayforit
-private_key: 5J94Yqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+private_key: 5J94YqNxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-# WAX子账号
-# 子账号私钥
-sub_key: 5J94Yqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-# 子账号名
+# 子账号
 sub_accounts:
-  - zhuandafao12
-  - zhuandafao13
+  account1: 5J94YqNxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  account2: 5J94YqNxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 # 功能：【获取收益】【升级卡】【加速升级卡】【质押】【解除质押】【开包】【买包】【批量买包】【批量开包归集】【转移】【买卡】【卖卡】
@@ -408,3 +416,11 @@ v2.7
 2022年8月4日
 
 支持class4的卡
+
+v2.7.1
+2022年12月2日
+
+user.yml文件中，sub_accounts允许每个小号使用不同的私钥
+
+新增【多号获取收益归集.bat】功能  
+运行后，会定时收集小号上的SH奖励，兑换成BTK，然后自动归集到主号  

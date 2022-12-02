@@ -1,4 +1,5 @@
 import time
+import schedule
 import logger
 from logger import log
 import ruamel.yaml
@@ -95,13 +96,39 @@ class Batch:
         log.info("开始批量开包，归集卡")
         self.batch_do(self.do_unpack)
 
+    def do_getreward(self, miner: Mining) -> bool:
+        try:
+            miner.log.info(f"开始使用账号【{miner.wax_account}】获取收益")
+            miner.do_getreward()
+            return True
+        except RequestException as e:
+            miner.log.info("网络错误:{0}".format(str(e)))
+        except NodeException as e:
+            miner.log.info("节点错误,状态码 {0}, text: {1}".format(e.resp.status_code, e.resp.text))
+        except TransactionException as e:
+            miner.log.info("交易错误,状态码 {0}, text: {1}".format(e.resp.status_code, e.resp.text))
+        except StopException as e:
+            miner.log.exception("脚本错误: {0}".format(str(e)))
+        except Exception as e:
+            miner.log.exception("脚本错误: {0}".format(str(e)))
+        return False
+
+
+    def getreward(self):
+        log.info("开始批量获取收益，兑换BTK，归集BTK")
+        schedule.every(user_param.getreward).minutes.do(self.batch_do, func = self.do_getreward)
+        schedule.run_all()
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+
 
 
 
 def main():
     parser = argparse.ArgumentParser(description="mining network")
     parser.add_argument("-config", default="user.yml", required=False)
-    parser.add_argument("action", choices=["buy_packs", "unpacks"])
+    parser.add_argument("action", choices=["buy_packs", "unpacks", "getreward"])
     #parser.add_argument("count", nargs="?", default= -1, type=int)
     args = parser.parse_args()
 
@@ -119,14 +146,16 @@ def main():
         batch = Batch()
         batch.main_account = Mining(user_param.account, user_param.private_key, proxy)
         batch.sub_accounts = []
-        for item in user_param.sub_accounts:
-            miner = Mining(item, user_param.sub_key, proxy)
+        for account, key in user_param.sub_accounts.items():
+            miner = Mining(account, key, proxy)
             batch.sub_accounts.append(miner)
         log.info(f"一共{ len(batch.sub_accounts) }个子账户")
         if args.action == "buy_packs":
             batch.buy_packs()
         elif args.action == "unpacks":
             batch.unpacks()
+        elif args.action == "getreward":
+            batch.getreward()
     except Exception as e:
         log.exception("脚本出错:{0}".format(str(e)))
 

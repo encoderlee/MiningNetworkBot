@@ -30,8 +30,7 @@ class UserParam:
     account: str = None
     private_key: str = None
 
-    sub_key: Optional[str] = None
-    sub_accounts: Optional[List[str]] = None
+    sub_accounts: Optional[Dict[str, str]] = None
 
     rarity: str = None
     card_class: int = 0
@@ -40,6 +39,7 @@ class UserParam:
 
     getreward: int = 60
     withdraw: bool = False
+    collect: bool = False
     group: int = 500
 
     threads: int = 1

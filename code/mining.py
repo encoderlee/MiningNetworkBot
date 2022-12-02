@@ -21,7 +21,7 @@ from res import Yolasic, get_card_class
 from utils import string_to_name
 from record import recorder
 
-version = "2.7"
+version = "2.7.1"
 
 
 class StopException(Exception):
@@ -482,15 +482,24 @@ class Mining:
             self.getreward(sub)
             time.sleep(interval.req)
         if user_param.withdraw:
-            self.log.info("3分钟后兑换成BTK")
-            time.sleep(180)
+            self.log.info("2分钟后兑换成BTK")
+            time.sleep(120)
             for i in range(0, 10):
                 if self.withdraw_sh_to_btk():
                     break
                 if i < 10:
                     self.log.info("稍后重试")
                     time.sleep(interval.transact)
+        if user_param.collect:
+            self.log.info("2分钟后归集BTK")
+            time.sleep(120)
+            btk = self.balance_btk()
+            if btk >= Decimal("0.01"):
+                self.transfer_btk(user_param.account, btk)
+            else:
+                self.log.info("BTK余额过少，不归集")
         self.log.info("收集完毕，{0}分钟后再收集".format(user_param.getreward))
+
 
     def keep_getreward(self):
         schedule.every(user_param.getreward).minutes.do(self.do_getreward)
@@ -1128,7 +1137,7 @@ class Mining:
 
     def trx_sh_to_btk(self, sh_balance: Decimal, min_price: Decimal):
         self.log.info(f"正在将 {sh_balance} SH兑换成BTK")
-        btk = sh_balance * min_price * Decimal("0.0001")
+        btk = sh_balance * min_price * Decimal("0.0001") * Decimal("0.95")
         btk = btk.quantize(Decimal("0.0000"))
         trx = {
             "actions": [{
@@ -1169,9 +1178,9 @@ class Mining:
             raise StopException("无法获取账户信息")
         sh_balance = Decimal(info["balance"])
         self.log.info(f"SH余额: { sh_balance }")
-        if sh_balance < 100000:
+        if sh_balance < 10000000000:
             self.log.info("SH过少，暂不兑换")
-            return False
+            return True
         return self.trx_sh_to_btk(sh_balance, min_price)
 
 
